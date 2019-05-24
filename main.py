@@ -3,6 +3,7 @@ from config import *
 import telebot
 from flask import Flask, request
 import logging
+from subscribes import *
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 
@@ -12,16 +13,39 @@ bot = telebot.TeleBot(TOKEN)
 # scheduler = BackgroundScheduler()
 # scheduler.start()
 
+create_subscribes()
+
 
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message):
-    text = 'Приветствую!'
+    text = 'Дароу! Если ты подпишешшься на мои обновления, я буду оповещать тебя, как только состояние базы изменится.' \
+           'Список доступных команд:\n/help - список доступных команд\n' \
+           '/get - получить полную статистику на данный момент\n/out - отписаться от рассылки\n' \
+           '/in - подписаться на рассылку'
     bot.send_message(message.chat.id, text)
+
+
+@bot.message_handler(commands=['get'])
+def handle_get(message):
+    select_all_ids()
+    bot.send_message(message.chat.id, "get request")
+
+
+@bot.message_handler(commands=['in'])
+def handle_in(message):
+    add_to_subscribes(message.chat.id)
+    bot.send_message(message.chat.id, "Готово! Я подписал тебя на рассылку.")
+
+
+@bot.message_handler(commands=['out'])
+def handle_out(message):
+    remove_from_subscribes(message.chat.id)
+    bot.send_message(message.chat.id, "Обидно, конечно, ну ладно. Атписка оформлена.")
 
 
 @bot.message_handler(content_types=["text"])
 def unknown_messages(message):
-    bot.send_message(message.chat.id, "Извини, я тебя не понимаю. Попробуй еще раз.")
+    bot.send_message(message.chat.id, "Введи \"/help\", если хочешь увидеть список доступных команд.")
 
 
 logger = telebot.logger
