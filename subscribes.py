@@ -42,5 +42,7 @@ def select_all_ids():
     cursor.execute(SELECT_SUBSCRIBES)
     data = cursor.fetchall()
     print(data)
+    result = data[0]
     conn.commit()
     conn.close()
+    return result

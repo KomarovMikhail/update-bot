@@ -4,6 +4,7 @@ import telebot
 from flask import Flask, request
 import logging
 from subscribes import *
+from spreadsheet import *
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 
@@ -28,6 +29,7 @@ def handle_start_help(message):
 @bot.message_handler(commands=['get'])
 def handle_get(message):
     select_all_ids()
+    get_spreadsheet()
     bot.send_message(message.chat.id, "get request")
 
 
@@ -46,6 +48,10 @@ def handle_out(message):
 @bot.message_handler(content_types=["text"])
 def unknown_messages(message):
     bot.send_message(message.chat.id, "Введи \"/help\", если хочешь увидеть список доступных команд.")
+
+
+def watch_updates():
+    pass
 
 
 logger = telebot.logger
