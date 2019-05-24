@@ -8,11 +8,12 @@ def create_stats():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     cursor.execute(CREATE_STATS)
+    conn.commit()
+    conn.close()
+
     data = get_spreadsheet()
     for i, value in enumerate(data):
         add_to_stats(i, value)
-    conn.commit()
-    conn.close()
 
 
 def add_to_stats(i, value):
