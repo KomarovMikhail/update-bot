@@ -85,5 +85,5 @@ def select_all_stats():
         curr[item[0]] = item[1]
     result = []
     for i in range(len(curr)):
-        result.append(STATS_MAP[i] + ' >> ' + curr[i])
+        result.append(STATS_MAP[i] + ' >> ' + str(curr[i]) + '\n')
     return result

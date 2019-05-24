@@ -31,6 +31,7 @@ def handle_start_help(message):
 
 @bot.message_handler(commands=['get'])
 def handle_get(message):
+    print(select_all_subscribes())
     stats = select_all_stats()
     text = 'Текущая статистика:\n'
     for item in stats:
