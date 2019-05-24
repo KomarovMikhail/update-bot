@@ -35,14 +35,13 @@ def remove_from_subscribes(cid):
     conn.close()
 
 
-def select_all_ids():
+def select_all_subscribes():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
 
     cursor.execute(SELECT_SUBSCRIBES)
     data = cursor.fetchall()
-    print(data)
-    result = data[0]
+    result = [item[0] for item in data]
     conn.commit()
     conn.close()
     return result

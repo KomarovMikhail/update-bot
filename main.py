@@ -22,7 +22,7 @@ create_stats()
 
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message):
-    text = 'Дароу! Если ты подпишешшься на мои обновления, я буду оповещать тебя, как только состояние базы изменится.' \
+    text = 'Дароу! Если ты подпишешься на мои обновления, я буду оповещать тебя, как только состояние базы изменится. ' \
            'Список доступных команд:\n/help - список доступных команд\n' \
            '/get - получить полную статистику на данный момент\n/out - отписаться от рассылки\n' \
            '/in - подписаться на рассылку'
@@ -31,10 +31,11 @@ def handle_start_help(message):
 
 @bot.message_handler(commands=['get'])
 def handle_get(message):
-    select_all_ids()
-    compare_stats()
-
-    bot.send_message(message.chat.id, "get request")
+    stats = select_all_stats()
+    text = 'Текущая статистика:\n'
+    for item in stats:
+        text += item
+    bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(commands=['in'])
