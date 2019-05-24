@@ -9,8 +9,8 @@ from datetime import datetime, timedelta
 
 bot = telebot.TeleBot(TOKEN)
 
-scheduler = BackgroundScheduler()
-scheduler.start()
+# scheduler = BackgroundScheduler()
+# scheduler.start()
 
 
 @bot.message_handler(commands=['start', 'help'])
