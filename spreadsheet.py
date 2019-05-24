@@ -4,9 +4,12 @@ from config import CSV
 
 def get_spreadsheet():
     spreadsheet = pd.read_csv(CSV)
-
-    print("test:", spreadsheet.loc[1, 0])
-    print("test:", spreadsheet.loc[1, 4])
-
-    return
-
+    result = (
+        spreadsheet.loc[0, 'Unnamed: 1'],
+        spreadsheet.loc[1, 'Unnamed: 1'],
+        spreadsheet.loc[2, 'Unnamed: 1'],
+        spreadsheet.loc[0, 'Unnamed: 4'],
+        spreadsheet.loc[1, 'Unnamed: 4'],
+        spreadsheet.loc[2, 'Unnamed: 4'],
+    )
+    return result

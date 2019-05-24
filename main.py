@@ -5,6 +5,7 @@ from flask import Flask, request
 import logging
 from subscribes import *
 from spreadsheet import *
+from stats import *
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 
@@ -14,7 +15,9 @@ bot = telebot.TeleBot(TOKEN)
 # scheduler = BackgroundScheduler()
 # scheduler.start()
 
+# init database
 create_subscribes()
+create_stats()
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -29,7 +32,8 @@ def handle_start_help(message):
 @bot.message_handler(commands=['get'])
 def handle_get(message):
     select_all_ids()
-    get_spreadsheet()
+    compare_stats()
+
     bot.send_message(message.chat.id, "get request")
 
 
