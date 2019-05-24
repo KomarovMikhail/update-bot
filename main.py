@@ -15,13 +15,8 @@ scheduler.start()
 
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message):
-    main_markup = main_menu_button()
-    text = 'Приветствую! С помощью этого бота ты можешь отслеживать расписание докладов и заводить новые знакомства.'
-    bot.send_message(message.chat.id, text, reply_markup=main_markup)
-
-    text = 'Что я могу для тебя сделать?'
-    inline_markup = generate_menu()
-    bot.send_message(message.chat.id, text, reply_markup=inline_markup)
+    text = 'Приветствую!'
+    bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(content_types=["text"])
