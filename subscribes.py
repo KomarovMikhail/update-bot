@@ -17,10 +17,13 @@ def add_to_subscribes(cid):
 
     cursor.execute(EXISTS_SUBSCRIBES.format(cid))
     data = cursor.fetchall()
+    flag = False
     if not data[0][0]:
         cursor.execute(INSERT_SUBSCRIBES.format(cid))
+        flag = True
     conn.commit()
     conn.close()
+    return flag
 
 
 def remove_from_subscribes(cid):
@@ -29,10 +32,13 @@ def remove_from_subscribes(cid):
 
     cursor.execute(EXISTS_SUBSCRIBES.format(cid))
     data = cursor.fetchall()
+    flag = False
     if data[0][0]:
         cursor.execute(DELETE_SUBSCRIBES.format(cid))
+        flag = True
     conn.commit()
     conn.close()
+    return flag
 
 
 def select_all_subscribes():

@@ -4,16 +4,14 @@ import telebot
 from flask import Flask, request
 import logging
 from subscribes import *
-from spreadsheet import *
 from stats import *
 from apscheduler.schedulers.background import BackgroundScheduler
-from datetime import datetime, timedelta
 
 
 bot = telebot.TeleBot(TOKEN)
 
-# scheduler = BackgroundScheduler()
-# scheduler.start()
+scheduler = BackgroundScheduler()
+scheduler.start()
 
 # init database
 create_subscribes()
@@ -41,14 +39,20 @@ def handle_get(message):
 
 @bot.message_handler(commands=['in'])
 def handle_in(message):
-    add_to_subscribes(message.chat.id)
-    bot.send_message(message.chat.id, "Готово! Я подписал тебя на рассылку.")
+    flag = add_to_subscribes(message.chat.id)
+    if flag:
+        bot.send_message(message.chat.id, "Готово! Я подписал тебя на рассылку.")
+    else:
+        bot.send_message(message.chat.id, "Ты уже есть в списке подписчиков.")
 
 
 @bot.message_handler(commands=['out'])
 def handle_out(message):
-    remove_from_subscribes(message.chat.id)
-    bot.send_message(message.chat.id, "Обидно, конечно, ну ладно. Атписка оформлена.")
+    flag = remove_from_subscribes(message.chat.id)
+    if flag:
+        bot.send_message(message.chat.id, "Обидно, конечно, ну ладно. Атписка оформлена.")
+    else:
+        bot.send_message(message.chat.id, "Тебя нет в списке подписчикеов")
 
 
 @bot.message_handler(content_types=["text"])
@@ -57,7 +61,17 @@ def unknown_messages(message):
 
 
 def watch_updates():
-    pass
+    data = compare_stats()
+    if len(data) != 0:
+        text = "Оповещание. Следующие значния были изменены:\n"
+        for item in data:
+            text += item
+        cids = select_all_subscribes()
+        for cid in cids:
+            bot.send_message(cid, text)
+
+
+scheduler.add_job(watch_updates, 'interval', minutes=1)
 
 
 logger = telebot.logger
