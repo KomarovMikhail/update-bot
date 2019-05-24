@@ -43,7 +43,7 @@ def compare_stats():
     result = []
 
     for i in range(len(prev)):
-        if prev[i] == curr[i]:
+        if prev[i] != curr[i]:
             result.append(STATS_MAP[i] + ' >> Предыдущее значение: ' + str(prev[i]) + '. Текущее значение: ' +
                           str(curr[i]) + '.\n')
             update_stats(i, curr[i])
