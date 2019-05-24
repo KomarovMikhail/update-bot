@@ -4,6 +4,7 @@ Flask==1.0.3
 itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
+psycopg2==2.8.2
 pyTelegramBotAPI==3.6.6
 pytz==2019.1
 requests==2.7.0
