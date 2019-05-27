@@ -1,15 +1,23 @@
-import pandas as pd
-from config import CSV
+from config import *
+from googleapiclient.discovery import build
+import httplib2
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 def get_spreadsheet():
-    spreadsheet = pd.read_csv(CSV)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE,
+                                                                   ['https://www.googleapis.com/auth/spreadsheets'])
+    http_auth = credentials.authorize(httplib2.Http())
+    service = build('sheets', 'v4', http=http_auth)
+    result = service.spreadsheets().values().get(
+        spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
+    spreadsheet = result.get('values')
     result = (
-        spreadsheet.loc[0, 'Unnamed: 1'],
-        spreadsheet.loc[1, 'Unnamed: 1'],
-        spreadsheet.loc[2, 'Unnamed: 1'],
-        spreadsheet.loc[0, 'Unnamed: 4'],
-        spreadsheet.loc[1, 'Unnamed: 4'],
-        spreadsheet.loc[2, 'Unnamed: 4'],
+        int(spreadsheet[0][1]),
+        int(spreadsheet[1][1]),
+        int(spreadsheet[2][1]),
+        int(spreadsheet[0][4]),
+        int(spreadsheet[1][4]),
+        int(spreadsheet[2][4]),
     )
     return result
