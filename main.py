@@ -71,7 +71,7 @@ def watch_updates():
             bot.send_message(cid, text)
 
 
-scheduler.add_job(watch_updates, 'interval', minutes=1)
+scheduler.add_job(watch_updates, 'interval', seconds=20)
 
 
 logger = telebot.logger
