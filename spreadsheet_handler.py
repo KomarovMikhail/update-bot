@@ -24,7 +24,12 @@ def create_link_storage():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     cursor.execute(CREATE_LINK_STORAGE)
-    cursor.execute(INSERT_LINK_STORAGE.format(0, SPREADSHEET_ID))
+    cursor.execute(EXISTS_LINK_STORAGE.format(0))
+    data = cursor.fetchall()
+    if data[0][0]:
+        cursor.execute(UPDATE_LINK_STORAGE.format(0, SPREADSHEET_ID))
+    else:
+        cursor.execute(INSERT_LINK_STORAGE.format(0, SPREADSHEET_ID))
     conn.commit()
     conn.close()
 
