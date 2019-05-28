@@ -6,6 +6,7 @@ import logging
 from subscribes import *
 from stats import *
 from apscheduler.schedulers.background import BackgroundScheduler
+from spreadsheet_handler import *
 
 
 bot = telebot.TeleBot(TOKEN)
@@ -16,6 +17,9 @@ scheduler.start()
 # init database
 create_subscribes()
 create_stats()
+create_link_storage()
+
+spreadsheet_handler = SpreadsheetHandler()
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -23,7 +27,8 @@ def handle_start_help(message):
     text = 'Дароу! Если ты подпишешься на мои обновления, я буду оповещать тебя, как только состояние базы изменится. ' \
            'Список доступных команд:\n/help - список доступных команд\n' \
            '/get - получить полную статистику на данный момент\n/out - отписаться от рассылки\n' \
-           '/in - подписаться на рассылку'
+           '/in - подписаться на рассылку\n/set - установить новую ссылку на таблицу\n' \
+           '/link - посмотреть текущую ссылку на таблицу'
     bot.send_message(message.chat.id, text)
 
 
@@ -55,9 +60,28 @@ def handle_out(message):
         bot.send_message(message.chat.id, "Тебя нет в списке подписчикеов")
 
 
+@bot.message_handler(commands=['set'])
+def handle_out(message):
+    bot.send_message(message.chat.id, "Введи ссылку на Google таблицу.")
+    spreadsheet_handler.add_cid(message.chat.id)
+
+
+@bot.message_handler(commands=['link'])
+def handle_out(message):
+    bot.send_message(message.chat.id, "Текущая ссылка на таблицу: " + build_link())
+
+
 @bot.message_handler(content_types=["text"])
 def unknown_messages(message):
-    bot.send_message(message.chat.id, "Введи \"/help\", если хочешь увидеть список доступных команд.")
+    if spreadsheet_handler.if_changing(message.chat.id):
+        flag = update_link_storage(message.text)
+        if flag:
+            bot.send_message(message.chat.id,  "Ссылка на таблицу оновлена.")
+        else:
+            bot.send_message(message.chat.id, "Не удалось обновить ссылку на таблицу, попробуй еще раз.")
+        spreadsheet_handler.remove_cid(message.chat.id)
+    else:
+        bot.send_message(message.chat.id, "Введи \"/help\", если хочешь увидеть список доступных команд.")
 
 
 def watch_updates():
