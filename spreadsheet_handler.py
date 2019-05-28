@@ -31,7 +31,7 @@ def create_link_storage():
 
 def update_link_storage(link):
     splited = link.split('/')
-    if splited[3] != 'spreadsheets':
+    if len(splited) < 6:
         return False
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
