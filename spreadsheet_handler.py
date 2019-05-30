@@ -44,7 +44,7 @@ def update_link_storage(link):
     return True
 
 
-def build_link():
+def get_spreadsheet_id():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     cursor.execute(SELECT_LINK_STORAGE)
@@ -52,3 +52,9 @@ def build_link():
     conn.commit()
     conn.close()
     return data[0][1]
+
+
+def build_link():
+    sid = get_spreadsheet_id()
+    pref = 'https://docs.google.com/spreadsheets/d/'
+    return pref + sid

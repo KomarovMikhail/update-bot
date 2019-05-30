@@ -2,11 +2,11 @@ from config import *
 from googleapiclient.discovery import build
 import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
-from spreadsheet_handler import build_link
+from spreadsheet_handler import get_spreadsheet_id
 
 
 def get_spreadsheet():
-    spreadsheet_id = build_link()
+    spreadsheet_id = get_spreadsheet_id()
     credentials = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE,
                                                                    ['https://www.googleapis.com/auth/spreadsheets'])
     http_auth = credentials.authorize(httplib2.Http())
