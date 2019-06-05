@@ -31,5 +31,5 @@ Username бота в телеграме: @AssessmentUpdateBot.
 
 ---
 P.S. В случае необходимости расширения функционала бота или неполадок, обращаться:  
-Телеграм: @mihanya009
+Телеграм: @mihanya009  
 E-mail: m.komarov@changellenge.ru
