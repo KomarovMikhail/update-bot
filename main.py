@@ -28,7 +28,7 @@ def handle_start_help(message):
            'Список доступных команд:\n/help - список доступных команд\n' \
            '/get - получить полную статистику на данный момент\n/out - отписаться от рассылки\n' \
            '/in - подписаться на рассылку\n/set - установить новую ссылку на таблицу\n' \
-           '/link - посмотреть текущую ссылку на таблицу\n\nСсылка на подробную документацию: https://docs.google.com/document/d/1e9tGbSbgptADC1SxG3bUAE5uncd4VWLLye3zlml1Pfs/edit#heading=h.gq7a16cjf744'
+           '/link - посмотреть текущую ссылку на таблицу\n\nСсылка на подробную документацию: https://docs.google.com/document/d/1e9tGbSbgptADC1SxG3bUAE5uncd4VWLLye3zlml1Pfs/edit?usp=sharing'
     bot.send_message(message.chat.id, text)
 
 
