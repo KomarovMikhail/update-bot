@@ -85,14 +85,17 @@ def unknown_messages(message):
 
 
 def watch_updates():
-    data = compare_stats()
-    if len(data) != 0:
-        text = "Оповещание. Следующие значния были изменены:\n"
-        for item in data:
-            text += item
-        cids = select_all_subscribes()
-        for cid in cids:
-            bot.send_message(cid, text)
+    try:
+        data = compare_stats()
+        if len(data) != 0:
+            text = "Оповещание. Следующие значния были изменены:\n"
+            for item in data:
+                text += item
+            cids = select_all_subscribes()
+            for cid in cids:
+                bot.send_message(cid, text)
+    except Exception as e:
+        print(e)
 
 
 scheduler.add_job(watch_updates, 'interval', seconds=20)
